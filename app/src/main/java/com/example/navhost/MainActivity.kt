@@ -1,5 +1,6 @@
 package com.example.navhost
 
+import android.R
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,12 +16,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -38,9 +43,11 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.navhost.ui.theme.NavHostTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,7 +56,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NavHostTheme {
-                RadioBackground()
+                RadioButtonApp()
             }
             }
         }
@@ -186,57 +193,198 @@ class MainActivity : ComponentActivity() {
 //}
 
 //EJEMPLO 3 NAV HOST
-@Composable
-fun FormScreen(onEnviar: (String, String)-> Unit)
-{
-    var nombre by remember { mutableStateOf("") }
-    var apellidos by remember { mutableStateOf("") }
+//@Composable
+//fun FormScreen(onEnviar: (String, String)-> Unit)
+//{
+//    var nombre by remember { mutableStateOf("") }
+//    var apellidos by remember { mutableStateOf("") }
+//
+//    Column(Modifier
+//        .fillMaxSize()
+//        .padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally)
+//    {
+//        Spacer(Modifier.height(15.dp))
+//        TextField(value = nombre, onValueChange = {nombre = it}, label = {Text("Nombre")}, modifier = Modifier.fillMaxWidth())
+//        Spacer(Modifier.height(15.dp))
+//        TextField(value = apellidos, onValueChange = {apellidos = it}, label = {Text("Apellido")}, modifier = Modifier.fillMaxWidth())
+//        Spacer(Modifier.height(15.dp))
+//        Button(
+//            onClick = { onEnviar(nombre, apellidos) },
+//            colors = ButtonDefaults.buttonColors(Color(0xFFFF5722)))
+//        {
+//            Text(text = "IR A LA PANTALLA 2")
+//        }
+//    }
+//}
 
-    Column(Modifier
-        .fillMaxSize()
-        .padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally)
-    {
-        Spacer(Modifier.height(15.dp))
-        TextField(value = nombre, onValueChange = {nombre = it}, label = {Text("Nombre")}, modifier = Modifier.fillMaxWidth())
-        Spacer(Modifier.height(15.dp))
-        TextField(value = apellidos, onValueChange = {apellidos = it}, label = {Text("Apellido")}, modifier = Modifier.fillMaxWidth())
-        Spacer(Modifier.height(15.dp))
-        Button(
-            onClick = { onEnviar(nombre, apellidos) },
-            colors = ButtonDefaults.buttonColors(Color(0xFFFF5722)))
-        {
-            Text(text = "IR A LA PANTALLA 2")
+//@Composable
+//fun RadioButtonSingleSelection(modifier: Modifier = Modifier) {
+//    val radioOptions = listOf("Red", "Green", "Blue")
+//    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+//    // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
+//
+//    Box(modifier.fillMaxSize().padding(20.dp), contentAlignment = Alignment.Center)
+//    {
+//        Column(modifier.selectableGroup(), horizontalAlignment = Alignment.CenterHorizontally)
+//        {
+//            Text("Elige un color de fondo", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+//            Spacer(modifier.height(20.dp))
+//            radioOptions.forEach { text ->
+//                Row(
+//                    Modifier
+//                        .fillMaxWidth()
+//                        .height(56.dp)
+//                        .selectable(
+//                            selected = (text == selectedOption),
+//                            onClick = { onOptionSelected(text) },
+//                            role = Role.RadioButton
+//                        )
+//                        .padding(horizontal = 16.dp), horizontalArrangement = Arrangement.Center
+//                ) {
+//                    RadioButton(
+//                        selected = (text == selectedOption),
+//                        onClick = null // null recommended for accessibility with screen readers
+//                    )
+//                    Text(
+//                        text = text,
+//                        style = MaterialTheme.typography.bodyLarge,
+//                        modifier = Modifier.padding(start = 16.dp)
+//                    )
+//                }
+//            }
+//            Button(
+//                onClick = { },
+//                colors = ButtonDefaults.buttonColors(Color(0xFFFF5722)))
+//            {
+//                Text(text = "Ir a la siguiente pantalla")
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun RadioBackground() //radioOptions: List<String>, onBack: ()-> Unit
+//{
+////    when(radioOptions)
+////    {
+////        "Red" -> {
+////            Modifier.background(Color.Red)
+////        }
+////        "Green" -> {
+////            Modifier.background(Color.Green)
+////        }
+////        "Blue" -> {
+////            Modifier.background(Color.Blue)
+////        }
+////    }
+//
+//    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center)
+//    {
+//        Button(
+//            onClick = { /*onBack()*/ },
+//            colors = ButtonDefaults.buttonColors(Color(0xFF35536B)))
+//        {
+//            Text(text = "VOLVER A LA PANTALLA PRINCIPAL")
+//        }
+//    }
+//}
+
+//@Composable
+//fun AppNav()
+//{
+//    val navController=rememberNavController()
+//
+//    NavHost(navController, startDestination = "form")
+//    {
+//        composable("form")
+//        {
+//            FormScreen(onEnviar =
+//                {nombre, apellidos ->
+//                    navController.currentBackStackEntry?.savedStateHandle?.apply {
+//                        set("nombre", nombre)
+//                        set("apellidos", apellidos)
+//                    }
+//                    navController.navigate("second")
+//                })
+//        }
+//        composable("second")
+//        {
+//            var prev = navController.previousBackStackEntry?.savedStateHandle
+//            var nombre = prev?.get<String>("nombre").orEmpty()
+//            var apellidos = prev?.get<String>("apellidos").orEmpty()
+//
+//            //FormScreen2(nombre = nombre, apellidos= apellidos, onBack = { navController.popBackStack()})
+//        }
+//    }
+//}
+
+//PRUEBA
+@Composable
+fun RadioButtonApp() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "selection") {
+        composable("selection") {
+            RadioButtonSingleSelection(
+                onNavigate = { color ->
+                    navController.navigate("background/$color")
+                }
+            )
+        }
+        composable(
+            route = "background/{color}",
+            arguments = listOf(navArgument("color") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val color = backStackEntry.arguments?.getString("color") ?: "Red"
+            RadioBackground(
+                selectedColor = color,
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }
 
 @Composable
-fun RadioButtonSingleSelection(modifier: Modifier = Modifier) {
+fun RadioButtonSingleSelection(
+    modifier: Modifier = Modifier,
+    onNavigate: (String) -> Unit
+) {
     val radioOptions = listOf("Red", "Green", "Blue")
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
-    // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
 
-    Box(modifier.fillMaxSize().padding(20.dp), contentAlignment = Alignment.Center)
-    {
-        Column(modifier.selectableGroup(), horizontalAlignment = Alignment.CenterHorizontally)
-        {
+    Box(
+        modifier = modifier.fillMaxSize().background(Color(0x4BD75D2D)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .selectableGroup()
+                .shadow(10.dp, RoundedCornerShape(20.dp))
+                .background(Color.White, RoundedCornerShape(20.dp))
+                .padding(20.dp)
+                ,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text("Elige un color de fondo", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            Spacer(modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+
             radioOptions.forEach { text ->
                 Row(
                     Modifier
-                        .fillMaxWidth()
                         .height(56.dp)
                         .selectable(
                             selected = (text == selectedOption),
                             onClick = { onOptionSelected(text) },
                             role = Role.RadioButton
                         )
-                        .padding(horizontal = 16.dp), horizontalArrangement = Arrangement.Center
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
                         selected = (text == selectedOption),
-                        onClick = null // null recommended for accessibility with screen readers
+                        onClick = null,
+                        colors = RadioButtonDefaults.colors(Color(0xFFFF9800))
                     )
                     Text(
                         text = text,
@@ -245,10 +393,13 @@ fun RadioButtonSingleSelection(modifier: Modifier = Modifier) {
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
             Button(
-                onClick = { },
-                colors = ButtonDefaults.buttonColors(Color(0xFFFF5722)))
-            {
+                onClick = { onNavigate(selectedOption) },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF5722))
+            ) {
                 Text(text = "Ir a la siguiente pantalla")
             }
         }
@@ -256,57 +407,28 @@ fun RadioButtonSingleSelection(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun RadioBackground() //radioOptions: List<String>, onBack: ()-> Unit
-{
-//    when(radioOptions)
-//    {
-//        "Red" -> {
-//            Modifier.background(Color.Red)
-//        }
-//        "Green" -> {
-//            Modifier.background(Color.Green)
-//        }
-//        "Blue" -> {
-//            Modifier.background(Color.Blue)
-//        }
-//    }
-
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center)
-    {
-        Button(
-            onClick = { /*onBack()*/ },
-            colors = ButtonDefaults.buttonColors(Color(0xFF35536B)))
-        {
-            Text(text = "VOLVER A LA PANTALLA PRINCIPAL")
-        }
+fun RadioBackground(
+    selectedColor: String,
+    onBack: () -> Unit
+) {
+    val backgroundColor = when(selectedColor) {
+        "Red" -> Color.Red
+        "Green" -> Color.Green
+        "Blue" -> Color.Blue
+        else -> Color.White
     }
-}
 
-@Composable
-fun AppNav()
-{
-    val navController=rememberNavController()
-
-    NavHost(navController, startDestination = "form")
-    {
-        composable("form")
-        {
-            FormScreen(onEnviar =
-                {nombre, apellidos ->
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set("nombre", nombre)
-                        set("apellidos", apellidos)
-                    }
-                    navController.navigate("second")
-                })
-        }
-        composable("second")
-        {
-            var prev = navController.previousBackStackEntry?.savedStateHandle
-            var nombre = prev?.get<String>("nombre").orEmpty()
-            var apellidos = prev?.get<String>("apellidos").orEmpty()
-
-            //FormScreen2(nombre = nombre, apellidos= apellidos, onBack = { navController.popBackStack()})
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor),
+        contentAlignment = Alignment.Center
+    ) {
+        Button(
+            onClick = onBack,
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF35536B))
+        ) {
+            Text(text = "VOLVER A LA PANTALLA PRINCIPAL")
         }
     }
 }
@@ -314,5 +436,5 @@ fun AppNav()
 @Preview(showBackground = true)
 @Composable
 fun PreviewBox() {
-    RadioBackground()
+    RadioButtonApp()
 }
